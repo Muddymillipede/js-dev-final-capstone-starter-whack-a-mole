@@ -3,7 +3,7 @@ const moles = document.querySelectorAll('.mole');
 const startButton = document.querySelector('#start');
 // TODO: Add the missing query selectors:
 const score = document.querySelector('score'); // Use querySelector() to get the score element
-const timerDisplay = document.querySelector('timer') // use querySelector() to get the timer element.
+const timerDisplay = document.querySelector('timer'); // use querySelector() to get the timer element.
 
 let time = 0;
 let timer;
@@ -128,7 +128,7 @@ function gameOver() {
 *
 */
 function showUp() {
-  let delay = setDelay("easy"); // TODO: Update so that it uses setDelay()
+  let delay = setDelay(difficulty); // TODO: Update so that it uses setDelay()
   const hole = chooseHole(holes);  // TODO: Update so that it use chooseHole()
   return showAndHide(hole, delay);
 }
@@ -177,7 +177,8 @@ function toggleVisibility(hole){
 */
 function updateScore() {
   // TODO: Write your code here
-
+  points+=1;
+  document.getElementById("score").textContent = points;
   return points;
 }
 
@@ -190,8 +191,8 @@ function updateScore() {
 */
 function clearScore() {
   // TODO: Write your code here
-  // points = 0;
-  // score.textContent = points;
+  points = 0;
+  document.getElementById("score").textContent = points;
   return points;
 }
 
@@ -229,7 +230,7 @@ function startTimer() {
 */
 function whack(event) {
   // TODO: Write your code here.
-  // call updateScore()
+  updateScore();
   return points;
 }
 
@@ -240,7 +241,7 @@ function whack(event) {
 */
 function setEventListeners(){
   // TODO: Write your code here
-
+  moles.forEach((mole)=>{mole.addEventListener('click',whack)});
   return moles;
 }
 
