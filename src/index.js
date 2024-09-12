@@ -108,12 +108,12 @@ function gameOver() {
   // TODO: Write your code here
   if(time > 0)
   {
-    timeOutId = showUp();
+    const timeOutId = showUp();
     return timeOutId;
   }
   else
   {
-    gameStopped = stopGame();
+    const gameStopped = stopGame();
     return gameStopped;
   }
 }
@@ -144,7 +144,6 @@ function showUp() {
 function showAndHide(hole, delay){
   // TODO: call the toggleVisibility function so that it adds the 'show' class.
   toggleVisibility(hole);
-  
   const timeoutID = setTimeout(() => {
     // TODO: call the toggleVisibility function so that it removes the 'show' class when the timer times out.
     toggleVisibility(hole);
@@ -177,7 +176,7 @@ function toggleVisibility(hole){
 */
 function updateScore() {
   // TODO: Write your code here
-  points+=1;
+  points++;
   document.getElementById("score").textContent = points;
   return points;
 }
@@ -204,7 +203,11 @@ function clearScore() {
 function updateTimer() {
   // TODO: Write your code here.
   // hint: this code is provided to you in the instructions.
-  
+  if(time > 0)
+  {
+    time -= 1;
+    document.getElementById("timer").textContent = time;
+  }
   return time;
 }
 
@@ -216,7 +219,7 @@ function updateTimer() {
 */
 function startTimer() {
   // TODO: Write your code here
-  // timer = setInterval(updateTimer, 1000);
+  timer = setInterval(updateTimer, 1000);
   return timer;
 }
 
@@ -241,7 +244,16 @@ function whack(event) {
 */
 function setEventListeners(){
   // TODO: Write your code here
-  moles.forEach((mole)=>{mole.addEventListener('click',whack)});
+    moles.forEach((mole)=>{
+      let clicked = false;
+      mole.addEventListener('click',()=>{
+      
+      if(!clicked)
+        {
+          whack();
+          clicked = true;
+        }
+      })});
   return moles;
 }
 
@@ -265,6 +277,7 @@ function setDuration(duration) {
 function stopGame(){
   // stopAudio(song);  //optional
   clearInterval(timer);
+  clearScore();
   return "game stopped";
 }
 
@@ -275,8 +288,10 @@ function stopGame(){
 *
 */
 function startGame(){
+  setEventListeners();
   setDuration(10);
   showUp();
+  startTimer();
   return "game started";
 }
 
