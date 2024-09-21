@@ -2,7 +2,7 @@ const holes = document.querySelectorAll('.hole');
 const moles = document.querySelectorAll('.mole');
 const startButton = document.querySelector('#start');
 // TODO: Add the missing query selectors:
-const score = document.querySelector('score'); // Use querySelector() to get the score element
+const score = document.querySelector('#score'); // Use querySelector() to get the score element
 const timerDisplay = document.querySelector('timer'); // use querySelector() to get the timer element.
 
 let time = 0;
@@ -11,6 +11,18 @@ let lastHole = 0;
 let points = 0;
 let difficulty = "hard";
 
+/*Array that will keep the three top scores*/ 
+const players = [3];
+
+/*class Player{
+  constructor(name, score, difficulty)
+  {
+    this.name = name;
+    this.score = score;
+    this.difficulty = difficulty;
+  }
+}
+*/
 /**
  * Generates a random integer within a range.
  *
@@ -75,11 +87,12 @@ function chooseHole(holes) {
   let lastHole = null;
   if(hole === lastHole)
   {
-    chooseHole;
+    chooseHole(holes);
   }else
   {
     lastHole = hole;
   }
+  
   return hole;
 
 }
@@ -244,16 +257,14 @@ function whack(event) {
 */
 function setEventListeners(){
   // TODO: Write your code here
-    moles.forEach((mole)=>{
-      let clicked = false;
-      mole.addEventListener('click',()=>{
-      
-      if(!clicked)
-        {
-          whack();
-          clicked = true;
-        }
-      })});
+  moles.forEach((mole)=>{
+    mole.addEventListener('click',whack)
+  });
+  /*for (let mole of moles)
+  {
+    mole.addEventListener('click',whack);
+  }*/
+    
   return moles;
 }
 
@@ -276,10 +287,20 @@ function setDuration(duration) {
 */
 function stopGame(){
   // stopAudio(song);  //optional
+    /*This code will try to solve the problem of the points being recorded after the timer is over*/
+    moles.forEach((mole)=>{
+      mole.removeEventListener('click',whack)
+    });
   clearInterval(timer);
   clearScore();
   return "game stopped";
 }
+ /*This function will create a player object*/ 
+function createPlayer(name){
+  const player = new Player(name, points, difficulty)
+}
+
+/*This function will create*/
 
 /**
 *
@@ -288,14 +309,19 @@ function stopGame(){
 *
 */
 function startGame(){
+  clearScore();
   setEventListeners();
+  //const main = document.querySelectorAll
   setDuration(10);
   showUp();
   startTimer();
   return "game started";
 }
 
-startButton.addEventListener("click", startGame);
+startButton.addEventListener("click", () =>
+  {
+   startGame();
+  });
 
 
 // Please do not modify the code below.
