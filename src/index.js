@@ -1,9 +1,12 @@
 const holes = document.querySelectorAll('.hole');
 const moles = document.querySelectorAll('.mole');
-const startButton = document.querySelector('#start');
+const startButton = document.querySelectorAll('#start');
 // TODO: Add the missing query selectors:
 const score = document.querySelector('#score'); // Use querySelector() to get the score element
 const timerDisplay = document.querySelector('timer'); // use querySelector() to get the timer element.
+
+/*Game audio*/
+const gameAudio = new Audio("assets/molesong.mp3");
 
 let time = 0;
 let timer;
@@ -11,18 +14,6 @@ let lastHole = 0;
 let points = 0;
 let difficulty = "hard";
 
-/*Array that will keep the three top scores*/ 
-const players = [3];
-
-/*class Player{
-  constructor(name, score, difficulty)
-  {
-    this.name = name;
-    this.score = score;
-    this.difficulty = difficulty;
-  }
-}
-*/
 /**
  * Generates a random integer within a range.
  *
@@ -244,9 +235,15 @@ function startTimer() {
 * the moles.
 *
 */
+
 function whack(event) {
   // TODO: Write your code here.
+  /*I included the whack sound*/
+  const whackSound = new Audio('assets/hit.mp3');
+  whackSound.play();
+  //whackSound.pause();
   updateScore();
+  toggleVisibility(hole);
   return points;
 }
 
@@ -260,11 +257,6 @@ function setEventListeners(){
   moles.forEach((mole)=>{
     mole.addEventListener('click',whack)
   });
-  /*for (let mole of moles)
-  {
-    mole.addEventListener('click',whack);
-  }*/
-    
   return moles;
 }
 
@@ -279,7 +271,7 @@ function setDuration(duration) {
   return time;
 }
 
-/**
+/*
 *
 * This function is called when the game is stopped. It clears the
 * timer using clearInterval. Returns "game stopped".
@@ -291,16 +283,38 @@ function stopGame(){
     moles.forEach((mole)=>{
       mole.removeEventListener('click',whack)
     });
+  endGame();
+  //setInterval(2000);
   clearInterval(timer);
-  clearScore();
+  //clearScore();
   return "game stopped";
 }
- /*This function will create a player object*/ 
-function createPlayer(name){
-  const player = new Player(name, points, difficulty)
+/*This function changes the difficulty global variable to change
+the delay of the moles coming out*/
+function setDifficulty(selectedDifficulty)
+{
+   difficulty = selectedDifficulty;
 }
+/*I implemented this function inside stop game. It gets rid of the
+grid and proceeds to just print a message and the final score. It also
+implements a button that will reload the page when the button is clicked,
+so a new game can be started*/
+function endGame()
+{
+  const body = document.querySelector("body");
+  const game = body.querySelector("#game");
+  const scoreBoard = body.querySelector("#scoreBoard");
+  console.log(scoreBoard.innerHTML);
+  scoreBoard.innerHTML = `<h2>Game over<br>Your score is: <br><span id="score" style="white-space: pre-line">${points}</span></h2>` ;
+  const newGameBtn = document.createElement("div");
+  newGameBtn.classList.add("newGame");
+  newGameBtn.innerHTML = `<br><button id="newGame"> Press here to start a new game </button><br>`;
+  newGameBtn.addEventListener('click',()=>location.reload());
+  body.removeChild(game);
+  body.appendChild(scoreBoard);
+  body.appendChild(newGameBtn);
 
-/*This function will create*/
+}
 
 /**
 *
@@ -308,20 +322,31 @@ function createPlayer(name){
 * is clicked.
 *
 */
-function startGame(){
+
+/*I had to include clearScore() here since one of the tests
+was stating that the score after just one click would throw 2
+instead of 1*/
+/*I implemented the setDifficulty() function, but I had to get
+rid of the start button. The game now starts when a difficulty is
+selected*/
+function startGame(selectedDifficulty){
+  
   clearScore();
+  setDifficulty(selectedDifficulty);
   setEventListeners();
-  //const main = document.querySelectorAll
   setDuration(10);
   showUp();
   startTimer();
+  
   return "game started";
 }
 
-startButton.addEventListener("click", () =>
+startButton.forEach((button)=>button.addEventListener("click", (event) =>
   {
-   startGame();
-  });
+    gameAudio.play();
+    const selectedDifficulty = button.textContent;
+    startGame(selectedDifficulty);
+  }));
 
 
 // Please do not modify the code below.

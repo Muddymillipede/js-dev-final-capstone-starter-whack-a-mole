@@ -1,15 +1,22 @@
 <html>
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./src/styles.css">
   </head>
   <body>
     <h1 id='title'>Whack-a-Mole!!</h1>
+    <div id="game">
     <div>
       <div>
-        <h2>Click start to play!</h2>
-        <button id="start">start</button>
+        <h2>Click on the desired difficulty to play!</h2>
+          <div id="difficultyButtons">  
+            <button id="start">easy</button>
+            <button id="start">normal</button>
+            <button id="start">hard</button>
+          </div>
       </div>
-      <div>
+      <div id="scoreBoard">
         <h2>score: <span id="score">0</span></h2>
       </div>
       <div>
@@ -56,6 +63,7 @@
     </div>
       <!--TODO: Add the missing holes and moles. -->
     </div>
+  </div>
     <script src="./src/index.js"></script>
   </body>
 </html>

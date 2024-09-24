@@ -8,6 +8,7 @@ html {
   background-size: cover;
   z-index:0;
   overflow: hidden;
+  cursor: url("../assets/mallet.png"),auto;
 }
 
 h1 {
@@ -26,12 +27,29 @@ h2 {
 }
 
 #start {
-    text-align: center;
+   /* display: flex;
+    flex-direction: row;
+    /*justify-content: baseline;*/
     font-size: 30px;
 }
 
 #timer{
     color: white;
+}
+
+#difficultyButtons
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 50px;
+}
+
+.newGame
+{
+  display: flex;
+  font-size: 30px;
+  justify-content: center;
 }
 
 .grid {
